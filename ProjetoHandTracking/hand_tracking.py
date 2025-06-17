@@ -4,6 +4,8 @@ import numpy as np
 import time
 
 ###
+'''python ProjetoHandTracking/hand_tracking.py'''
+###
 
 confidence = float
 webcam_image = np.ndarray
@@ -55,8 +57,8 @@ class Detector:
                       img: webcam_image,
                       hand_number: int = 0):
         self.required_landmark_list = []
-        my_hand = None
-        if self.results.multi_hand_lardmarks:
+        
+        if self.results.multi_hand_landmarks:
             height, width, _ = img.shape
             my_hand = self.results.multi_hand_landmarks[hand_number]
             for id, lm in enumerate(my_hand.landmark):
@@ -65,7 +67,7 @@ class Detector:
                 self.required_landmark_list.append([id, center_x, center_y])
                 
             
-        return my_hand
+        return self.required_landmark_list
 
 
 
@@ -73,6 +75,10 @@ class Detector:
 # Este bloco só executa quando o arquivo é rodado diretamente (python hand_tracking.py)
 # Se o arquivo for importado em outro programa, este código não será executado
 if __name__ == '__main__': 
+    # Coletando fps
+    previous_time = 0
+    current_time = 0
+
     Detec = Detector()  # Cria uma instância da classe Detector para detectar mãos
 
     capture = cv2.VideoCapture(0)
@@ -86,8 +92,14 @@ if __name__ == '__main__':
         landmark_list = Detec.find_position(img)
         if landmark_list:
             print(landmark_list[8])
+        
+        # Calculando fps      
+        current_time = time.time()
+        fps = 1/(current_time - previous_time)
+        previous_time = current_time        
 
         # Mostrando o frame
+        cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_SCRIPT_COMPLEX, 2, (255, 0, 255), 3)
         cv2.imshow('WebCam :O', img)
 
 
