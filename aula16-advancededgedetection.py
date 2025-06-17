@@ -20,11 +20,11 @@ cv2.imshow('Laplaciano refatorado', laplaciano)
 # Método de SOBEL
 # cv2.Sobel(imagem, datadepth, dx, dy) onde dx e dy representam as direcoes x e y]
 x = cv2.Sobel(cinza, cv2.CV_64F, 1, 0)
-y = cv2.Sobel(cinza, cv2.CV64F, 0, 1)
+y = cv2.Sobel(cinza, cv2.CV_64F, 0, 1)
 
 # resoltados separados das derivadas com o metodo sobel
-# cv2.imshow('SOBEL X', x)
-# cv2.imshow('SOBEL Y', y)
+cv2.imshow('SOBEL X', x)
+cv2.imshow('SOBEL Y', y)
 
 # combinar x e y em uma bitwise operation
 combined_sobel = cv2.bitwise_or(x, y)
